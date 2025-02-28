@@ -102,7 +102,48 @@ function clearMarkers() {
         activeInfoWindow = null;
     }
 }
-const sosAlert=document.getElementById("sos");
-sosAlert.addEventListener('click',()=>{
-    alert("Bachaaaaaao!!PLzzzzzzz")
-})
+
+// SOS functionality
+const sosButton = document.getElementById("sos-button");
+sosButton.addEventListener("click", () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const userLocation = `Lat: ${position.coords.latitude}, Lng: ${position.coords.longitude}`;
+            fetch("http://localhost:3000/send-sos", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ location: userLocation })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => console.error("Error sending SOS:", error));
+        });
+    } else {
+        alert("Geolocation not supported by your browser.");
+    }
+});
+
+// Add emergency contact functionality
+document.getElementById("add-contact").addEventListener("click", () => {
+    const contactNumber = document.getElementById("contact-number").value;
+    if (!contactNumber) {
+        alert("Please enter a contact number.");
+        return;
+    }
+
+    fetch("http://localhost:3000/add-contact", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ contact: contactNumber })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        document.getElementById("contact-list").innerHTML += `<p>${contactNumber}</p>`;
+    })
+    .catch(error => console.error("Error adding contact:", error));
+});
