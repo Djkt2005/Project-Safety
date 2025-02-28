@@ -4,7 +4,7 @@ let activeInfoWindow = null;
 let markingEnabled = false;
 
 function initMap() {
-    const defaultLocation = { lat: 37.7749, lng: -122.4194 }; // San Francisco as fallback
+    const defaultLocation = { lat: 28.679079, lng: 77.069710};
 
     map = new google.maps.Map(document.getElementById("google-map"), {
         center: defaultLocation,
@@ -102,3 +102,7 @@ function clearMarkers() {
         activeInfoWindow = null;
     }
 }
+const sosAlert=document.getElementById("sos");
+sosAlert.addEventListener('click',()=>{
+    alert("Bachaaaaaao!!PLzzzzzzz")
+})
